@@ -1,5 +1,7 @@
 package dev.martin.taskflow
 
+import dev.martin.taskflow.api.healthRoutes
+import dev.martin.taskflow.api.configureStatusPages
 import io.ktor.server.application.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -10,16 +12,15 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 fun Application.module() {
-    install(CallLogging)
+    configureStatusPages()
 
+    install(CallLogging)
     install(ContentNegotiation) {
         json(Json { prettyPrint = true; ignoreUnknownKeys = true })
     }
 
     routing {
-        get("/health") {
-            call.respond(Health("ok"))
-        }
+        healthRoutes()
     }
 }
 
